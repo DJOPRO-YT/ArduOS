@@ -7,3 +7,6 @@
 - Cartridges Support for ArduConsoles Games
 - And much more !
 
+## More Infos:
+- [CHANGELOG.md](https://github.com/DJOPRO-YT/ArduOS/blob/main/CHANGELOG.md)
+- [Wiki](https://github.com/DJOPRO-YT/ArduOS/wiki)
