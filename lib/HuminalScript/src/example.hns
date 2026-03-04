@@ -1,0 +1,14 @@
+create variable MyVariable = "hi"
+create variable MySecondVariable = "MyVariable"
+
+-- this is a comment, this line will be skiped by the HuminalScript Interpreter
+// As well as this, this is also a comment ! like C++ / C
+create comment This is also a comment ! this is for a human readable line so he can know
+
+create function HiFunction ()
+-- body script here ......
+return "hi"
+end
+
+call function HiFunction()
+call function HiFunction save to VariableReturnedValue

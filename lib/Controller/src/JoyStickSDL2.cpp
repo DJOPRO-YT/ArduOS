@@ -1,0 +1,130 @@
+#include "JoyStickSDL2.hpp"
+#ifdef NATIVE
+
+void DrawJoyStick(SDL_Renderer * renderer, int x, int y, int radius,int halftmaxzone, bool &isclicked, int &currentPosX, int &currentPosY)
+{
+    SDL_Rect zone_ = {x - (halftmaxzone + radius + 1),y - (halftmaxzone + radius + 1),2*(halftmaxzone + radius + 11),2*(halftmaxzone + radius + 1)};
+
+    SDL_SetRenderDrawColor(renderer,0,0,0,255);
+    SDL_RenderFillCircle(renderer,x,y,radius);
+    SDL_RenderPresent(renderer);
+
+    currentPosY = 512;
+    currentPosX = 512;
+
+    bool run_ = true;
+    bool clicked = false;
+    //int currentPosX,currentPosY;
+    //int posX,posY = 0;
+    SDL_Event events;
+    while (run_)
+    {
+        while (!enabled) {Sleep_for(100);}
+
+        if (true) {
+
+        while (SDL_PollEvent(&events))
+        {
+            switch (events.type)
+            {
+                case SDL_QUIT:
+                {
+                    run_ = false;
+                    continue;
+                }
+                case SDL_MOUSEBUTTONUP:
+                {
+                    SDL_SetRenderDrawColor(renderer,255,255,255,255);
+                    SDL_RenderFillRect(renderer,&zone_);
+
+                    SDL_RenderFillCircle(renderer,constrain(events.motion.x,x-halftmaxzone,halftmaxzone + x),constrain(events.motion.y,y-halftmaxzone,halftmaxzone + y),radius);
+                    SDL_SetRenderDrawColor(renderer,0,0,0,255);
+                    SDL_RenderFillCircle(renderer,x,y,radius);
+
+                    currentPosY = 512;//map(x,y-halftmaxzone,halftmaxzone + y,0,1024);
+                    currentPosX = 512;//map(y,x-halftmaxzone,halftmaxzone + x,0,1024);
+
+                    SDL_RenderPresent(renderer);
+
+                    bool aa = events.button.x <= x + radius && events.button.x >= x - radius;
+                    bool bb = events.button.y <= y + radius && events.button.y >= y - radius;
+                    if (!clicked && aa && bb)
+                    {
+
+                        isclicked = true;
+                        //{cout << "clicked";}
+                        this_thread::sleep_for(chrono::milliseconds(100));//delay
+                        isclicked = false;
+                    }
+                    else
+                    {
+                        clicked = false;
+                    }
+                }
+                case SDL_MOUSEMOTION:
+                {
+                    int btnx,btny;
+                    uint32_t buttons = SDL_GetMouseState(&btnx,&btny);
+                    if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+                        //
+                        if (!clicked) {
+                            bool aa = events.motion.x <= x + radius && events.motion.x >= x - radius;
+                            bool bb = events.motion.y <= y + radius && events.motion.y >= y - radius;
+                            if (aa && bb) {
+                                clicked = true;
+                            }
+
+                        }
+
+                        if (clicked){
+
+                            currentPosY = map(constrain(events.motion.y,y-halftmaxzone,halftmaxzone + y),y-halftmaxzone,halftmaxzone + y,0,1024);
+                            currentPosX = map(constrain(events.motion.x,x-halftmaxzone,halftmaxzone + x),x-halftmaxzone,halftmaxzone + x,0,1024);
+                            
+                            SDL_SetRenderDrawColor(renderer,255,255,255,255);
+                            SDL_RenderFillRect(renderer,&zone_);
+                            //SDL_RenderFillCircle(renderer,events.motion.x - events.motion.xrel,events.motion.y - events.motion.yrel,radius);
+                            SDL_SetRenderDrawColor(renderer,0,0,0,255);
+                            SDL_RenderFillCircle(renderer,constrain(events.motion.x,x-halftmaxzone,x+halftmaxzone),constrain(events.motion.y,y-halftmaxzone,y+halftmaxzone),radius);
+                            SDL_RenderPresent(renderer);
+                        }
+                    }else{
+                        clicked = false;
+                    }
+                    continue;
+                }
+            }
+        }
+        }
+    }
+
+}
+
+void JoyStick::SDL2init(SDL_Renderer* renderer_)
+{
+    renderer = renderer_;
+    while (!enabled) {Sleep_for(100);}
+    DrawJoyStick(renderer,150,425,50,20,ref(iscls),ref(posx),ref(posy));
+    //thread t1(DrawJoyStick,renderer,50,250,50,20,ref(iscls),ref(posx),ref(posy));
+    //t1.detach();
+}
+bool JoyStick::isClicked()
+{
+    return iscls;
+}
+
+int JoyStick::GetPosX()
+{
+    return posx;
+}
+
+int JoyStick::GetPosY()
+{
+    return posy;
+}
+
+void JoyStick::SetEnable(bool enable)
+{
+    enabled = enable;
+}
+#endif

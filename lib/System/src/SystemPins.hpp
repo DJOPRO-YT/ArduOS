@@ -1,0 +1,21 @@
+#ifndef SYSTEMPINS_H
+#define SYSTEMPINS_H
+
+// MODULE PINS
+#define CS_MODULE 8
+#define TX_MODULE 7
+#define RX_MODULE 6
+
+// BUZZER PINS
+#define BUZZER 5
+
+// JOYSTICK PINS
+#define VRX_PIN A2
+#define VRY_PIN A1
+#define JOY_BTN 2
+
+// BATTERY & CHARGER PINS
+#define CHARGE_CHECK 3
+#define BATTERY_VOLUME A0
+
+#endif
