@@ -16,3 +16,5 @@
 | 0 . 1 . 1 | [Added] Reset & Clear Screen |
 | 0 . 1 . 2 | [Remvd] SD Card Support for ArduConsole |
 | 0 . 2 . 0 | [Added] Dialog in UIManager |
+| 0 . 3 . 0 | [Added] Modules Support |
+| 0 . 3 . 1 | [Optim] Modules Limited for Cartridges only |
